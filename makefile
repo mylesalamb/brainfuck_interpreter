@@ -11,9 +11,15 @@ $(EXEC): $(OBJ)
 	$(CC) $(CCFLAGS) $(HEADERS) -o $(EXEC) $(OBJ)
 
 $(OBJDIR)/%.o: %.c
-	@echo $(HEADERS)
 	$(CC) -c $(CCFLAGS) $(HEADERS)  -o $@ $<
 
+
+.PHONY: clean
+
+clean:
+	rm $(OBJDIR)/*.o $(EXEC)
+
+
 vpath %.c src/
-vpath %.c obj/
+vpath %.o obj/
 

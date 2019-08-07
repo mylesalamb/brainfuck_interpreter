@@ -5,10 +5,14 @@
 
 typedef struct loop_pointer {
 
-struct loop_pointer* next;
-uint32_t ip;
+	struct loop_pointer* next;
+	uint32_t ip;
 
 } lptr_t;
+
+void add(lptr_t ** arg);
+void free_lptr(lptr_t * arg);
+uint32_t get_head(lptr_t * arg);
 
 
 typedef struct bfstruct {
@@ -22,6 +26,8 @@ typedef struct bfstruct {
 
 
 bf_t * bf_init(char * filename);
+void bf_free(bf_t * arg);
+void bf_interpret(bf_t * arg);
 
 
 
