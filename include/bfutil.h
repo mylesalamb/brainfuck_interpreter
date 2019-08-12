@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
+//loop pointer stuff
+
 typedef struct loop_pointer {
 
 	struct loop_pointer* next;
@@ -10,10 +12,13 @@ typedef struct loop_pointer {
 
 } lptr_t;
 
-void add(lptr_t ** arg);
-void free_lptr(lptr_t * arg);
+void add(lptr_t ** arg,uint32_t val);
+void lptr_free(lptr_t * arg);
 uint32_t get_head(lptr_t * arg);
+uint32_t pop_head(lptr_t ** arg);
 
+
+//intepreter stuff
 
 typedef struct bfstruct {
 

@@ -6,9 +6,47 @@
 //loop pointer operations
 
 
+/*
+add a loop ptr struct to the linked list,
+if ptr to null change in place, hence ptr ptr
+
+*/
+void add(lptr_t ** arg, uint32_t val){
+
+	lptr_t * new = (lptr_t *)malloc(sizeof(lptr_t));
+	new->ip = val;
+	new->next= *arg;
+	*arg = new;
+
+}
 
 
+/*
+destructor for entire struct as opposed to a single node
+*/
+void lptr_free(lptr_t * arg){
 
+	if(arg == NULL)
+		return;
+
+	lptr_t * cursor = arg->next;
+	free(arg);
+	lptr_free(cursor);
+
+	//free through the list
+}
+
+/*
+returns the head value of the linked list 
+
+*/
+uint32_t get_head(lptr_t * arg){
+	return arg->ip; 
+}
+
+uint32_t pop_head(lptr_t ** arg){
+	return arg->ip; 
+}
 
 //bf_t operations
 
