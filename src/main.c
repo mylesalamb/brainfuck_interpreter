@@ -7,7 +7,7 @@
 int main(int argc,  char * const argv[])
 {
 	int arg;
-	int hflag;
+	int hflag = 0;
 	char filename[STRSIZE];
 	
 
@@ -21,14 +21,15 @@ while((arg  = getopt(argc,argv,"hf:"))!= -1)
 			break;
 	}
 
-	//printf("%s\n",optarg );
-
 	if(hflag){
 		printf("usage: -f FILENAME\n");
 		return 0;
 	}
 
+	printf("Starting interpreter with filename: %s\n",filename );
 	bf_t * interp = bf_init(filename);
+	bf_interpret(interp);
+	bf_free(interp);
 
 
 

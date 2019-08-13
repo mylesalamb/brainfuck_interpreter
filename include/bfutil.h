@@ -24,6 +24,7 @@ typedef struct bfstruct {
 
 	uint32_t ip; //current instruction
 	FILE * fp; //ptr to the currently open file
+	uint32_t dp; //data pointer
 	char * mem;  //array of memory locations
 	lptr_t * lp; //linked list of loop indexes
 

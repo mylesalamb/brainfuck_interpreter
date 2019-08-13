@@ -45,7 +45,14 @@ uint32_t get_head(lptr_t * arg){
 }
 
 uint32_t pop_head(lptr_t ** arg){
-	return arg->ip; 
+	lptr_t * cursor = *arg;
+	uint32_t val = cursor->ip;
+	*arg = (*arg)->next;
+	free(cursor);
+	return val;
+
+
+
 }
 
 //bf_t operations
@@ -69,8 +76,11 @@ bf_t * bf_init(char * filename){
 		exit(1);
 
 	}
+	ptr->ip=0;
+	ptr->dp = 0;
+
 	//allocate memory 
-	ptr->mem = (char *)malloc(sizeof(char)*30000);
+	ptr->mem = (char *)calloc(sizeof(char),30000);
 	ptr->lp = NULL;
 	return ptr;
 
@@ -81,22 +91,78 @@ bf_t * bf_init(char * filename){
 //frees the memory used by a bf_t
 void bf_free(bf_t * arg){
 
-
-	//add loop ptr freeing
 	free(arg->mem);
 	fclose(arg->fp);
+	lptr_free(arg->lp);
+	free(arg);
 
 
 
 }
 /*
 Interprets the brainfuck code pointed to by the file pointer
+returning output (if any to stdout)
 
-
+reading input from stdin
 */
 
 void bf_interpret(bf_t * arg){
+
+	char c;
+
+	printf("Program out\n############################################\n");
+
+	while( (c=fgetc(arg->fp)) != EOF ){
+
+		//printf("IP: %d C:%c DP: %d mem[DP]:%d \n",arg->ip,c,arg->dp,(arg->mem)[arg->dp]);
+
+		switch(c){
+			case '+':
+				(arg->mem)[arg->dp]++;
+				break;
+
+			case '-':
+				(arg->mem)[arg->dp]--;
+				break;
+
+			case'>':
+				(arg->dp)++;
+				break;
+
+			case '<':
+				(arg->dp)--;
+				break;
+
+			case '[':
+				add(&(arg->lp),arg->ip);
+				break;
+
+			case ']':
+				if ((arg->mem)[arg->dp]==0)
+				{
+					pop_head(&(arg->lp));
+				}
+				else{
+					//look back to correct point in the file
+					arg->ip = get_head(arg->lp)+1;
+					fseek(arg->fp,arg->ip,SEEK_SET);
+					continue;
+				}
+				break;
+
+			case '.':
+				putchar((arg->mem)[arg->dp]);
+				break;
+
+			case ',':
+				(arg->mem)[arg->dp] = getc(stdin);
+				break; 
+		}
+
+		(arg->ip)++;
+
+	}
+
+	printf("############################################\n");
 	
-
-
 }
